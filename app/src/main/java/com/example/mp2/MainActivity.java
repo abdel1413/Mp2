@@ -1,5 +1,6 @@
 package com.example.mp2;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -58,5 +59,26 @@ public class MainActivity extends AppCompatActivity {
         //change startActivity(intent) to startActivityForResult() in order to
         //to able to get response from second activity
         startActivityForResult(intent, TEXT_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == TEXT_REQUEST){
+            if( resultCode == RESULT_OK){
+                String reply = data.getStringExtra(SecondActivity.EXTRA_REPLY);
+
+                //now set the text header and text msg from textView visible and add text
+                //so that you incorporate reply text in it to show on the main activity
+                //screen
+                mReplyHeadTextView.setVisibility(View.VISIBLE);
+
+                //put reply msg in textView bf making it visible
+                mReplyTextView.setText(reply);
+
+                mReplyTextView.setVisibility(View.VISIBLE);
+
+            }
+        }
     }
 }
