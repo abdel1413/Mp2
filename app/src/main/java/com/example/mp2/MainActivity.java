@@ -36,31 +36,55 @@ public class MainActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "onCreate");
 
 
+        //initalize  all the view variables
         mMessageEditText = findViewById(R.id.editText_main);  //get the reference  to the editText from layout
 
         //to get reponse from seconde activity and show it on main activity screen
+
         mReplyHeadTextView = findViewById(R.id.text_header_reply);  //find reference to reply header
         mReplyTextView = findViewById(R.id.text_message_reply);    //find reference to reply message
+
+
+        //this part is conserning the textView we set invisible initally
+        // Restore the saved state.
+        // See onSaveInstanceState() for what gets saved.
+
+        if (savedInstanceState != null) {
+            boolean isVisible =
+                    savedInstanceState.getBoolean("reply_visible");
+
+            // Show both the header and the message views. If isVisible is
+            // false or missing from the bundle, use the default layout.
+            if (isVisible) {
+                mReplyHeadTextView.setVisibility(View.VISIBLE);
+                mReplyTextView.setText(savedInstanceState.getString("reply_text"));
+                mReplyTextView.setVisibility(View.VISIBLE);
+
+
+            }
+
+        }
+
     }
 
     @Override
     protected void onStart() {
 
         super.onStart();
-        Log.d(LOG_TAG,"onStart()");
+        Log.d(LOG_TAG,"onStart");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(LOG_TAG,"onPause()");
+        Log.d(LOG_TAG,"onPause");
     }
 
     @Override
     protected void onRestart() {
 
         super.onRestart();
-        Log.d(LOG_TAG, "onRestart(");
+        Log.d(LOG_TAG, "onRestart");
     }
 
     @Override
@@ -74,15 +98,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
 
         super.onStop();
-        Log.d(LOG_TAG,"onStop()");
+        Log.d(LOG_TAG,"onStop");
     }
 
     @Override
     protected void onDestroy() {
 
         super.onDestroy();
-        Log.d(LOG_TAG,"onDestroy()");
+        Log.d(LOG_TAG,"onDestroy");
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (mReplyHeadTextView.getVisibility() == View.VISIBLE) {
+            outState.putBoolean("reply_visible", true);
+            outState.putString("reply_text",mReplyTextView.getText().toString());
+
+        }
+
+    }
+
 
 
     public void launchSecondActivity(View view) {
@@ -127,4 +164,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }
